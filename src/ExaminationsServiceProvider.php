@@ -26,6 +26,15 @@ class ExaminationsServiceProvider extends ServiceProvider
             'examination' => \Platform\Examinations\Models\Examination::class,
         ]);
 
+        // Vermengungsgruppen-Provider registrieren (lose Kopplung → der Termin prüft über die Core-Registry).
+        if (class_exists(\Platform\Core\Support\CatalogCombinationRegistry::class)) {
+            try {
+                app(\Platform\Core\Support\CatalogCombinationRegistry::class)
+                    ->register(new \Platform\Examinations\Catalog\ExaminationCombinationProvider());
+            } catch (\Throwable $e) {
+            }
+        }
+
         // Step 1: Register module
         if (
             config()->has('examinations.routing') &&
