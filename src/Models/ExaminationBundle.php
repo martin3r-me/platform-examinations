@@ -50,7 +50,7 @@ class ExaminationBundle extends Model
 
     public function examinations(): BelongsToMany
     {
-        return $this->belongsToMany(Examination::class, 'examination_bundle_items')
+        return $this->belongsToMany(Examination::class, 'examination_bundle_items', 'bundle_id', 'examination_id')
             ->withPivot('position')
             ->orderBy('examination_bundle_items.position');
     }
