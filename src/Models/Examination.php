@@ -26,6 +26,7 @@ class Examination extends Model
         'number',
         'title',
         'category',
+        'combination_group',
         'description',
         'legal_basis',
         'status',

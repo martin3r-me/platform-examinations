@@ -29,6 +29,8 @@
                     </div>
                     <x-nx-input-select name="form.category" label="Kategorie" wire:model="form.category"
                         nullable nullLabel="— ohne —" :options="$categoryOptions" />
+                    <x-nx-input-select name="form.combination_group" label="Vermengungsgruppe" wire:model="form.combination_group"
+                        nullable nullLabel="— ohne (frei kombinierbar) —" :options="$combinationGroupOptions" />
                     <x-nx-input-text name="form.legal_basis" label="Rechtsgrundlage" wire:model="form.legal_basis" />
                     <x-nx-input-select name="form.status" label="Status" wire:model="form.status"
                         :options="[['value'=>'active','label'=>'Aktiv'],['value'=>'archived','label'=>'Archiviert']]" />

@@ -35,6 +35,7 @@ class UpdateExaminationTool implements ToolContract, ToolMetadataContract
                 'number'           => ['type' => 'string'],
                 'title'            => ['type' => 'string'],
                 'category'         => ['type' => 'string'],
+                'combination_group' => ['type' => 'string', 'description' => 'Vermengungsgruppe (orthogonal zur category), z.B. "vorsorge" | "eignung". Nur EINE Gruppe je Termin erlaubt.'],
                 'legal_basis'      => ['type' => 'string'],
                 'description'      => ['type' => 'string'],
                 'valid_from'       => ['type' => 'string'],
@@ -64,7 +65,7 @@ class UpdateExaminationTool implements ToolContract, ToolMetadataContract
             }
 
             $payload = [];
-            foreach (['number', 'title', 'category', 'legal_basis', 'description', 'valid_from', 'valid_until', 'regulation_label'] as $f) {
+            foreach (['number', 'title', 'category', 'combination_group', 'legal_basis', 'description', 'valid_from', 'valid_until', 'regulation_label'] as $f) {
                 if (array_key_exists($f, $arguments)) {
                     $payload[$f] = $arguments[$f] !== '' ? $arguments[$f] : null;
                 }

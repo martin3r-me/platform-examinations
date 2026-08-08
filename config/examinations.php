@@ -36,4 +36,12 @@ return [
         'strain'     => 'Belastungen / Tätigkeiten',
         'other'      => 'Sonstige',
     ],
+
+    // Vermengungs-/Exklusivitätsgruppen (orthogonal zur Kategorie). Frei erweiterbar.
+    // Regel (im Termin/Bescheinigung durchgesetzt): nur EINE nicht-leere Gruppe je Termin.
+    // Gesetzlicher Kernfall: Vorsorge (z.B. G20) und Eignung (z.B. G25) nicht mischbar.
+    'combination_groups' => [
+        'vorsorge' => 'Vorsorge',
+        'eignung'  => 'Eignung',
+    ],
 ];

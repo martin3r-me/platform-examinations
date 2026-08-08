@@ -17,7 +17,7 @@ class Show extends Component
 
     public array $form = [];
 
-    protected array $fields = ['number', 'title', 'category', 'legal_basis', 'description', 'regulation_label', 'status'];
+    protected array $fields = ['number', 'title', 'category', 'combination_group', 'legal_basis', 'description', 'regulation_label', 'status'];
 
     public function mount(int $examination): void
     {
@@ -67,6 +67,7 @@ class Show extends Component
         return view('examinations::livewire.examination.show', [
             'examination'     => $examination,
             'categoryOptions' => collect(config('examinations.categories', []))->map(fn ($l, $k) => ['value' => $k, 'label' => $l])->values()->all(),
+            'combinationGroupOptions' => collect(config('examinations.combination_groups', []))->map(fn ($l, $k) => ['value' => $k, 'label' => $l])->values()->all(),
             'catalog'         => $catalog,
         ])->layout('platform::layouts.app');
     }
