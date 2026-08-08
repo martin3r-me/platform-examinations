@@ -22,12 +22,8 @@
 
     <x-ui-page-container width="contained" spacing="space-y-6">
         <x-nx-card>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <x-nx-input-text name="search" label="Suche" wire:model.live.debounce.300ms="search"
-                    placeholder="Titel, Nummer (G 20), Rechtsgrundlage …" />
-                <x-nx-input-select name="filterCategory" label="Kategorie" wire:model.live="filterCategory"
-                    nullable nullLabel="Alle Kategorien" :options="$categoryOptions" />
-            </div>
+            <x-nx-input-text name="search" label="Suche" wire:model.live.debounce.300ms="search"
+                placeholder="Titel, Nummer (G 20), Rechtsgrundlage …" />
         </x-nx-card>
 
         @if($total === 0)

@@ -15,17 +15,6 @@
         </x-ui-sidebar-item>
     </x-ui-sidebar-list>
 
-    @if(!empty($categories))
-        <x-ui-sidebar-list label="Kategorien">
-            @foreach($categories as $key => $label)
-                <x-ui-sidebar-item :href="route('examinations.examinations.index', ['kat' => $key])">
-                    @svg('heroicon-o-folder', 'w-4 h-4 text-[var(--nx-text)]')
-                    <span class="ml-2 text-sm flex-1 truncate">{{ $label }}</span>
-                    @if(($categoryCounts[$key] ?? 0) > 0)
-                        <span class="text-xs text-[color:var(--nx-faint)]">{{ $categoryCounts[$key] }}</span>
-                    @endif
-                </x-ui-sidebar-item>
-            @endforeach
-        </x-ui-sidebar-list>
-    @endif
+    {{-- Kategorien liegen bewusst NICHT hier, sondern als seitenspezifischer Filter in der
+         inneren Sidebar (Katalog/Dashboard) — sonst dreifache Redundanz (Modul-Nav + innere Sidebar + Dropdown). --}}
 </div>

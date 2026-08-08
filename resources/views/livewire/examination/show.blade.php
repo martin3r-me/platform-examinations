@@ -39,51 +39,60 @@
                 </div>
             </x-nx-card>
         </x-nx-section>
-
-        <x-nx-card flush class="divide-y divide-[color:var(--nx-line)]">
-            <x-nx-property-row icon="heroicon-o-hashtag" label="Version">
-                v{{ $examination->version }}{{ !$examination->isCurrentlyValid() ? ' · nicht aktuell gültig' : '' }}
-            </x-nx-property-row>
-            <x-nx-property-row icon="heroicon-o-clock" label="Gültigkeit">
-                {{ $examination->valid_from?->format('d.m.Y') ? 'ab '.$examination->valid_from->format('d.m.Y') : 'ab —' }}{{ $examination->valid_until?->format('d.m.Y') ? ' bis '.$examination->valid_until->format('d.m.Y') : ' (aktuell)' }}
-            </x-nx-property-row>
-        </x-nx-card>
     </x-ui-page-container>
 
-    {{-- Innere Sidebar: Eigenschaften im Überblick + Rücksprung --}}
+    {{-- Linke Sidebar: Katalog-Navigation — schneller Wechsel zwischen Grundsätzen --}}
     <x-slot name="sidebar">
-        <x-ui-page-sidebar title="Eigenschaften" icon="heroicon-o-beaker" width="w-72" :defaultOpen="true">
-            <div class="p-6 space-y-6">
+        <x-ui-page-sidebar title="Katalog" icon="heroicon-o-beaker" width="w-72" :defaultOpen="true">
+            <div class="p-3 space-y-1">
                 <a href="{{ route('examinations.examinations.index') }}" wire:navigate
-                   class="flex items-center gap-2 text-sm text-[color:var(--nx-accent)] hover:underline">
-                    @svg('heroicon-o-arrow-left', 'w-4 h-4') Zum Katalog
+                   class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-[color:var(--nx-muted)] hover:bg-[color:var(--nx-hover)] transition-colors">
+                    @svg('heroicon-o-arrow-left', 'w-4 h-4') Alle Untersuchungen
                 </a>
+                @foreach($catalog as $e)
+                    <a href="{{ route('examinations.examinations.show', $e->id) }}" wire:navigate
+                       @class([
+                           'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+                           'bg-[color:var(--nx-active)] text-[color:var(--nx-text)] font-medium' => $e->id === $examination->id,
+                           'text-[color:var(--nx-muted)] hover:bg-[color:var(--nx-hover)]' => $e->id !== $examination->id,
+                       ])>
+                        <span class="min-w-0 truncate">{{ trim(($e->number ? $e->number.' · ' : '').$e->title) }}</span>
+                    </a>
+                @endforeach
+            </div>
+        </x-ui-page-sidebar>
+    </x-slot>
 
+    {{-- Rechte Sidebar: Gültigkeit & Stand (zeitlich/rechtliche Dimension) --}}
+    <x-slot name="activity">
+        <x-ui-page-sidebar title="Gültigkeit & Stand" icon="heroicon-o-clock" width="w-72" :defaultOpen="true" storeKey="activityOpen" side="right">
+            <div class="p-6 space-y-6">
                 <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Kategorie</h3>
-                    @if($examination->category)
-                        <x-nx-badge variant="default">{{ config('examinations.categories')[$examination->category] ?? $examination->category }}</x-nx-badge>
-                    @else
-                        <div class="text-sm text-[color:var(--nx-muted)]">— ohne —</div>
-                    @endif
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Version</h3>
+                    <div class="text-sm text-[color:var(--nx-text)]">
+                        v{{ $examination->version }}
+                        @if(!$examination->isCurrentlyValid())
+                            <span class="text-[color:var(--nx-warning,#b45309)]"> · nicht aktuell gültig</span>
+                        @endif
+                    </div>
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Rechtsgrundlage</h3>
-                    <div class="text-sm text-[color:var(--nx-text)]">{{ $examination->legal_basis ?: '—' }}</div>
-                    @if($examination->regulation_label)
-                        <div class="text-xs text-[color:var(--nx-muted)] mt-0.5">{{ $examination->regulation_label }}</div>
-                    @endif
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Gültigkeit</h3>
+                    <div class="text-sm text-[color:var(--nx-text)]">
+                        {{ $examination->valid_from?->format('d.m.Y') ? 'ab '.$examination->valid_from->format('d.m.Y') : 'ab —' }}{{ $examination->valid_until?->format('d.m.Y') ? ' bis '.$examination->valid_until->format('d.m.Y') : ' (aktuell)' }}
+                    </div>
                 </div>
 
-                <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Status</h3>
-                    <x-nx-badge :variant="$examination->status === 'active' ? 'success' : 'default'" dot>
-                        {{ $examination->status === 'active' ? 'Aktiv' : 'Archiviert' }}
-                    </x-nx-badge>
-                    @if(!$examination->isCurrentlyValid())
-                        <div class="text-xs text-[color:var(--nx-warning,#b45309)] mt-1">Aktuell nicht gültig</div>
-                    @endif
+                @if($examination->regulation_label)
+                    <div>
+                        <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Rechtsstand</h3>
+                        <div class="text-sm text-[color:var(--nx-text)]">{{ $examination->regulation_label }}</div>
+                    </div>
+                @endif
+
+                <div class="rounded-md bg-[color:var(--nx-subtle,rgba(0,0,0,0.03))] p-3 text-xs text-[color:var(--nx-muted)]">
+                    Erbrachte Leistungen in der Sprechstunde referenzieren diesen Grundsatz (roter Faden Termin → Leistung → Katalog).
                 </div>
             </div>
         </x-ui-page-sidebar>

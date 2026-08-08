@@ -60,9 +60,14 @@ class Show extends Component
     {
         $examination = $this->resolve($this->examinationId);
 
+        // Katalog-Navigation für die linke Sidebar: schneller Wechsel zwischen Grundsätzen.
+        $catalog = Examination::forTeam((int) Auth::user()->currentTeam->id)
+            ->orderBy('category')->orderBy('position')->orderBy('number')->get(['id', 'number', 'title', 'category']);
+
         return view('examinations::livewire.examination.show', [
             'examination'     => $examination,
             'categoryOptions' => collect(config('examinations.categories', []))->map(fn ($l, $k) => ['value' => $k, 'label' => $l])->values()->all(),
+            'catalog'         => $catalog,
         ])->layout('platform::layouts.app');
     }
 }
