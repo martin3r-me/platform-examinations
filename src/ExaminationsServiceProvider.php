@@ -94,6 +94,13 @@ class ExaminationsServiceProvider extends ServiceProvider
             $registry->register(new \Platform\Examinations\Tools\CreateExaminationTool());
             $registry->register(new \Platform\Examinations\Tools\UpdateExaminationTool());
             $registry->register(new \Platform\Examinations\Tools\DeleteExaminationTool());
+
+            // Bündel (Pakete)
+            $registry->register(new \Platform\Examinations\Tools\ListBundlesTool());
+            $registry->register(new \Platform\Examinations\Tools\GetBundleTool());
+            $registry->register(new \Platform\Examinations\Tools\CreateBundleTool());
+            $registry->register(new \Platform\Examinations\Tools\AddBundleItemTool());
+            $registry->register(new \Platform\Examinations\Tools\RemoveBundleItemTool());
         } catch (\Throwable $e) {
             \Log::warning('Examinations: tool registration failed', ['error' => $e->getMessage()]);
         }
