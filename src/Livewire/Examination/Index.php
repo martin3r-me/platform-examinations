@@ -3,6 +3,7 @@
 namespace Platform\Examinations\Livewire\Examination;
 
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Platform\Examinations\Models\Examination;
 use Platform\Examinations\Services\ExaminationService;
@@ -13,6 +14,8 @@ use Platform\Examinations\Services\ExaminationService;
 class Index extends Component
 {
     public string $search = '';
+
+    #[Url(as: 'kat')]
     public string $filterCategory = '';
 
     public bool $showCreate = false;
@@ -110,10 +113,17 @@ class Index extends Component
             $grouped->push(['key' => '_other', 'label' => 'Ohne Kategorie', 'examinations' => $ungrouped]);
         }
 
+        // Zähler je Kategorie (gesamter Katalog, ungefiltert) für die innere Sidebar-Navigation.
+        $categoryCounts = $team
+            ? Examination::forTeam($team->id)->active()
+                ->selectRaw('category, COUNT(*) as c')->groupBy('category')->pluck('c', 'category')->all()
+            : [];
+
         return view('examinations::livewire.examination.index', [
-            'grouped'    => $grouped,
-            'total'      => $examinations->count(),
-            'categories' => $categories,
+            'grouped'        => $grouped,
+            'total'          => $examinations->count(),
+            'categories'     => $categories,
+            'categoryCounts' => $categoryCounts,
         ])->layout('platform::layouts.app');
     }
 }

@@ -24,4 +24,26 @@
             </p>
         </x-nx-card>
     </x-ui-page-container>
+
+    {{-- Innere Sidebar: Kategorie-Navigation → gefiltert in den Katalog --}}
+    <x-slot name="sidebar">
+        <x-ui-page-sidebar title="Kategorien" icon="heroicon-o-folder" width="w-72" :defaultOpen="true">
+            <div class="p-3 space-y-1">
+                <a href="{{ route('examinations.examinations.index') }}" wire:navigate
+                   class="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm text-[color:var(--nx-muted)] hover:bg-[color:var(--nx-hover)] transition-colors">
+                    <span>Alle Untersuchungen</span>
+                    <span class="text-xs text-[color:var(--nx-faint)]">{{ array_sum($categoryCounts) }}</span>
+                </a>
+                @foreach($categories as $key => $label)
+                    <a href="{{ route('examinations.examinations.index', ['kat' => $key]) }}" wire:navigate
+                       class="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm text-[color:var(--nx-muted)] hover:bg-[color:var(--nx-hover)] transition-colors">
+                        <span class="min-w-0 truncate">{{ $label }}</span>
+                        @if(($categoryCounts[$key] ?? 0) > 0)
+                            <span class="text-xs text-[color:var(--nx-faint)] shrink-0">{{ $categoryCounts[$key] }}</span>
+                        @endif
+                    </a>
+                @endforeach
+            </div>
+        </x-ui-page-sidebar>
+    </x-slot>
 </x-ui-page>

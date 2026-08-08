@@ -18,7 +18,7 @@
     @if(!empty($categories))
         <x-ui-sidebar-list label="Kategorien">
             @foreach($categories as $key => $label)
-                <x-ui-sidebar-item :href="route('examinations.examinations.index', ['filterCategory' => $key])">
+                <x-ui-sidebar-item :href="route('examinations.examinations.index', ['kat' => $key])">
                     @svg('heroicon-o-folder', 'w-4 h-4 text-[var(--nx-text)]')
                     <span class="ml-2 text-sm flex-1 truncate">{{ $label }}</span>
                     @if(($categoryCounts[$key] ?? 0) > 0)

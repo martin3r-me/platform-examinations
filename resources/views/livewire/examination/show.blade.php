@@ -49,4 +49,43 @@
             </x-nx-property-row>
         </x-nx-card>
     </x-ui-page-container>
+
+    {{-- Innere Sidebar: Eigenschaften im Überblick + Rücksprung --}}
+    <x-slot name="sidebar">
+        <x-ui-page-sidebar title="Eigenschaften" icon="heroicon-o-beaker" width="w-72" :defaultOpen="true">
+            <div class="p-6 space-y-6">
+                <a href="{{ route('examinations.examinations.index') }}" wire:navigate
+                   class="flex items-center gap-2 text-sm text-[color:var(--nx-accent)] hover:underline">
+                    @svg('heroicon-o-arrow-left', 'w-4 h-4') Zum Katalog
+                </a>
+
+                <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Kategorie</h3>
+                    @if($examination->category)
+                        <x-nx-badge variant="default">{{ config('examinations.categories')[$examination->category] ?? $examination->category }}</x-nx-badge>
+                    @else
+                        <div class="text-sm text-[color:var(--nx-muted)]">— ohne —</div>
+                    @endif
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Rechtsgrundlage</h3>
+                    <div class="text-sm text-[color:var(--nx-text)]">{{ $examination->legal_basis ?: '—' }}</div>
+                    @if($examination->regulation_label)
+                        <div class="text-xs text-[color:var(--nx-muted)] mt-0.5">{{ $examination->regulation_label }}</div>
+                    @endif
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-[color:var(--nx-faint)] mb-2">Status</h3>
+                    <x-nx-badge :variant="$examination->status === 'active' ? 'success' : 'default'" dot>
+                        {{ $examination->status === 'active' ? 'Aktiv' : 'Archiviert' }}
+                    </x-nx-badge>
+                    @if(!$examination->isCurrentlyValid())
+                        <div class="text-xs text-[color:var(--nx-warning,#b45309)] mt-1">Aktuell nicht gültig</div>
+                    @endif
+                </div>
+            </div>
+        </x-ui-page-sidebar>
+    </x-slot>
 </x-ui-page>

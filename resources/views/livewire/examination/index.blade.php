@@ -58,6 +58,36 @@
         @endif
     </x-ui-page-container>
 
+    {{-- Innere Sidebar: Kategorie-Navigation (klickbar filtert die Liste) --}}
+    <x-slot name="sidebar">
+        <x-ui-page-sidebar title="Kategorien" icon="heroicon-o-folder" width="w-72" :defaultOpen="true">
+            <div class="p-3 space-y-1">
+                <button type="button" wire:click="$set('filterCategory', '')"
+                        @class([
+                            'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+                            'bg-[color:var(--nx-active)] text-[color:var(--nx-text)] font-medium' => $filterCategory === '',
+                            'text-[color:var(--nx-muted)] hover:bg-[color:var(--nx-hover)]' => $filterCategory !== '',
+                        ])>
+                    <span>Alle Kategorien</span>
+                    <span class="text-xs text-[color:var(--nx-faint)]">{{ array_sum($categoryCounts) }}</span>
+                </button>
+                @foreach($categories as $key => $label)
+                    <button type="button" wire:click="$set('filterCategory', '{{ $key }}')"
+                            @class([
+                                'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors text-left',
+                                'bg-[color:var(--nx-active)] text-[color:var(--nx-text)] font-medium' => $filterCategory === $key,
+                                'text-[color:var(--nx-muted)] hover:bg-[color:var(--nx-hover)]' => $filterCategory !== $key,
+                            ])>
+                        <span class="min-w-0 truncate">{{ $label }}</span>
+                        @if(($categoryCounts[$key] ?? 0) > 0)
+                            <span class="text-xs text-[color:var(--nx-faint)] shrink-0">{{ $categoryCounts[$key] }}</span>
+                        @endif
+                    </button>
+                @endforeach
+            </div>
+        </x-ui-page-sidebar>
+    </x-slot>
+
     {{-- Anlege-Modal --}}
     <x-nx-modal size="lg" wire:model="showCreate">
         <x-slot name="header">Neue Untersuchung anlegen</x-slot>
