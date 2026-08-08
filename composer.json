@@ -1,0 +1,28 @@
+{
+    "name": "martin3r/platform-examinations",
+    "description": "Examinations catalog for Platform - arbeitsmedizinische Untersuchungen (DGUV-Grundsätze), referenziert von erbrachten Leistungen",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Platform Team",
+            "email": "team@platform.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Platform\\Examinations\\": "src/",
+            "Platform\\Examinations\\Database\\": "database/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\Examinations\\ExaminationsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
