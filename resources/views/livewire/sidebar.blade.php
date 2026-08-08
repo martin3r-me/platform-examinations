@@ -13,6 +13,10 @@
             @svg('heroicon-o-beaker', 'w-4 h-4 text-[var(--nx-text)]')
             <span class="ml-2 text-sm">Untersuchungen</span>
         </x-ui-sidebar-item>
+        <x-ui-sidebar-item :href="route('examinations.bundles.index')" :active="request()->routeIs('examinations.bundles.*')">
+            @svg('heroicon-o-squares-2x2', 'w-4 h-4 text-[var(--nx-text)]')
+            <span class="ml-2 text-sm">Bündel</span>
+        </x-ui-sidebar-item>
     </x-ui-sidebar-list>
 
     {{-- Kategorien liegen bewusst NICHT hier, sondern als seitenspezifischer Filter in der

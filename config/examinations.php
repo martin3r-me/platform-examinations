@@ -24,6 +24,7 @@ return [
             'items' => [
                 ['label' => 'Dashboard', 'route' => 'examinations.dashboard', 'icon' => 'heroicon-o-home'],
                 ['label' => 'Untersuchungen', 'route' => 'examinations.examinations.index', 'icon' => 'heroicon-o-beaker'],
+                ['label' => 'Bündel', 'route' => 'examinations.bundles.index', 'icon' => 'heroicon-o-squares-2x2'],
             ],
         ],
     ],
