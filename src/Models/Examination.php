@@ -20,13 +20,20 @@ class Examination extends Model
 
     protected $table = 'examinations';
 
+    /** Gesetzliche Kategorie (category_kind) — "eine Kategorie je Vorgang". */
+    public const KIND_VORSORGE = 'vorsorge';
+    public const KIND_EIGNUNG  = 'eignung';
+    public const KIND_FEV      = 'fev';
+
     protected $fillable = [
         'uuid',
+        'catalog_code',      // kanonischer Master-Schlüssel (team-übergreifend, sync-stabil)
         'team_id',
         'number',
         'title',
         'category',
         'combination_group',
+        'category_kind',     // vorsorge|eignung|fev
         'description',
         'legal_basis',
         'status',
