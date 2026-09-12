@@ -30,7 +30,8 @@ class Examination extends Model
         'catalog_code',      // kanonischer Master-Schlüssel (team-übergreifend, sync-stabil)
         'team_id',
         'number',
-        'title',
+        'title',               // bisheriger DGUV-Grundsatz-Titel (legacy)
+        'recommendation_name', // neue DGUV-Empfehlungs-Bezeichnung (2024)
         'category',
         'combination_group',
         'category_kind',     // vorsorge|eignung|fev
