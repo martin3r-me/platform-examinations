@@ -42,6 +42,8 @@ class Examination extends Model
         'valid_from',
         'valid_until',
         'regulation_label',
+        'interval_first_months',    // Standard-Intervall Erstuntersuchung (Monate)
+        'interval_followup_months', // Standard-Intervall Folgeuntersuchung (Monate)
         'position',
         'created_by_user_id',
     ];
